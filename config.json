@@ -1,12 +1,12 @@
 {
-    "server":["v03.warriorpaw.com"],
+    "server":"domain of your VPS",
     "server_port":443,
-    "local_port":[1080],
+    "local_port":1080,
     "local":"127.0.0.1",
-    "password":"tes1222t123",
-    "crt":"SSL_v03.crt",
-    "key":"SSL_v03.pem",
-    "ipv6":"0",
-    "CA":"StartSSL.CA.pem",
-    "tcptrans":[[0,"127.0.0.1",22,1090],[0,"127.0.0.1",22,1091],[0,"127.0.0.1",1026,1100]]
+    "password":"your password",
+    "crt":"ssl.crt",
+    "key":"ssl.key",
+    "CA":"root.crt",
+    "http_addr":"127.0.0.1",
+    "http_port":80
 }

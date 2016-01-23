@@ -1,12 +1,6 @@
-1、server.py 配置文件格式变动至客户端格式 ....没做！！
-2、PW error 和CA error 不再shutdown
-------2.3------
-1、客户端使用filepath
-2、修改recv大小到4096/1020
-todo: 
-socks转发也进行短链接化。。。
-http服务器独立出去
-长度混淆
-修改握手时recv函数
------2.3.1-----
-添加BMA
+1、添加流量混淆，WHY?  http://blog.zorinaq.com/?e=81
+2、http服务器独立出去了
+3、z_tcptrans删了，用处实在不大
+-------todo-------
+1、set_user到nobody后无法访问了，莫名其妙，拿树莓派测试OK，放到DO上就不行。
+2、异步
