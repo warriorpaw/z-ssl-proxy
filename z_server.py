@@ -104,7 +104,7 @@ class zProxyHandle(myssl.zProxyRequestHandler):
         except socket.error, e:
             logging.warn(e)
             return
-    
+
     def handleProxy(self):
         addrtype = self.socket5proxy()
         if addrtype:
@@ -171,7 +171,7 @@ class zProxyHandle(myssl.zProxyRequestHandler):
             print sys.exc_info()
             self.destroy()
             return False
-    
+
     def verify(self):
         global PW
         if self.data[:20] == PW:
@@ -190,7 +190,7 @@ class zProxyHandle(myssl.zProxyRequestHandler):
         l.write(s)
         l.close()
         sys.stderr.write(s)
-        
+
     version_string = handleHTTP.version_string
     do_HEAD = handleHTTP.send404
     do_PUT = handleHTTP.send404
@@ -231,7 +231,7 @@ class tcpproxyhandle:
     def removeID(self, ID):
         if ID in self.clientlist:
             del self.clientlist[ID]
-        
+
 class tcp_remote(threading.Thread):
     def __init__(self, sock, clientID):
         threading.Thread.__init__(self)
@@ -242,7 +242,7 @@ class tcp_remote(threading.Thread):
         self.SendSYN = 0
         self.RecvSYN = 0
         self.SYNbuffer = {}
-        
+
     def run(self):
         sock = self.sock
         fset = [sock]
@@ -305,21 +305,21 @@ class tcp_remote(threading.Thread):
             self.destroy()
         finally:
             self.mutex.release()
-                
+
 
     def destroy(self):
         TCP_CLIENTS.removeID(self.ID)
         while len(self.clients):
             self.clients.pop().destroy()
         self.sock.close()
-    
-    
+
+
 def main():
     global PW, HTTPLOG, TCP_CLIENTS
     logging.basicConfig(level=logging.DEBUG,
                         format='%(asctime)s %(levelname)-8s %(message)s',
                         datefmt='%Y-%m-%d %H:%M:%S', filemode='a+')
-    
+
     with open(filepath('config.json'), 'rb') as f:
         config = json.load(f)
     logging.info('loading config from %s' % filepath('config.json'))
@@ -331,14 +331,14 @@ def main():
     CRT = filepath(config['crt'])
     KEY = filepath(config['key'])
     TCP_CLIENTS = tcpproxyhandle()
-    
+
 
     if IPv6:
         ThreadingTCPServer.address_family = socket.AF_INET6
 
     HTTPLOG = filepath('http.log')
-    
-    server = myssl.ThreadingzProxyServer((SERVER,PORT[0]),
+
+    server = myssl.ThreadingzProxyServer((SERVER,PORT),
                                             zProxyHandle,
                                             CRT,
                                             KEY)

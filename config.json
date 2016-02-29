@@ -1,7 +1,7 @@
 {
-    "server":["v03.warriorpaw.com"],
+    "server": "v03.warriorpaw.com",
     "server_port":443,
-    "local_port":[1080],
+    "local_port": 1080,
     "local":"127.0.0.1",
     "password":"tes1222t123",
     "crt":"SSL_v03.crt",

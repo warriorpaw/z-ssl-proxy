@@ -21,7 +21,7 @@ def send_all(sock, data):
         con = con + 1
         if con > 14:
             raise Exception('send too many times!')
-        
+
 class ThreadingTCPServer(SocketServer.ThreadingMixIn, SocketServer.TCPServer):
     allow_reuse_address = True
 
@@ -124,7 +124,7 @@ def main():
     logging.basicConfig(level=logging.DEBUG,
                         format='%(asctime)s %(levelname)-8s %(message)s',
                         datefmt='%Y-%m-%d %H:%M:%S', filemode='a+')
-    
+
     with open(filepath('config.json'), 'rb') as f:
         config = json.load(f)
     logging.info('loading config from %s' % filepath('config.json'))
@@ -139,13 +139,12 @@ def main():
 
     if IPv6:
         ThreadingTCPServer.address_family = socket.AF_INET6
-    
+
     try:
-        for i in xrange(0,len(SERVER)):
-            server = ThreadingTCPServer((LOCAL, PORT[i]),Socks5Server)
-            server.seradd = (SERVER[i], REMOTE_PORT)
-            print "starting local at", PORT[i], 'to', SERVER[i]
-            local_server(server).start()
+        server = ThreadingTCPServer((LOCAL, PORT), Socks5Server)
+        server.seradd = (SERVER, REMOTE_PORT)
+        print "starting local at", PORT, 'to', SERVER
+        local_server(server).start()
     except socket.error, e:
         logging.error(e)
     except KeyboardInterrupt:

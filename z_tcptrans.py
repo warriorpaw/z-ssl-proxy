@@ -42,8 +42,8 @@ def read_all(sock):
         data += d
         data_len -= len(d)
     return data
-    
-        
+
+
 class ThreadingTCPServer(SocketServer.ThreadingMixIn, SocketServer.TCPServer):
     allow_reuse_address = True
 
@@ -52,12 +52,12 @@ class Mytimer(threading.Thread):
         threading.Thread.__init__(self)
         self.callback = callback
         self.over = False
-        
+
     def run(self):
         while not self.over:
             self.callback()
             time.sleep(random.randint(5,20))
-        
+
     def kill(self):
         self.over = True
 
@@ -104,7 +104,7 @@ class TcpProxyClient(SocketServer.StreamRequestHandler):
                 self.remotes.append(r)
             except:
                 print 'Time'
-                print sys.exc_info() 
+                print sys.exc_info()
                 remote.close()
                 break
 
@@ -113,7 +113,7 @@ class TcpProxyClient(SocketServer.StreamRequestHandler):
             self.remotes.remove(remote)
         if not len(self.remotes):
             self.destroy()
-            
+
     def send(self, data):
         def _send(self, data):
             result = send_all(self.connection, data)
@@ -215,7 +215,7 @@ class tcp_remote(threading.Thread):
         self.sock = sock
         self.local = local
         self.tcpruning = True
-        
+
     def run(self):
         sock = self.sock
         fset = [sock]
@@ -253,13 +253,13 @@ class local_server(threading.Thread):
         self.server = server
     def run(self):
         self.server.serve_forever()
-    
+
 def main():
     global PW, CA
     logging.basicConfig(level=logging.DEBUG,
                         format='%(asctime)s %(levelname)-8s %(message)s',
                         datefmt='%Y-%m-%d %H:%M:%S', filemode='a+')
-    
+
     with open(filepath('config.json'), 'rb') as f:
         config = json.load(f)
     logging.info('loading config from %s' % filepath('config.json'))
@@ -272,14 +272,14 @@ def main():
     IPv6 = int(config['ipv6'])
     CA = filepath(config['CA'])
     tcptrans = config['tcptrans']
-    
+
     if IPv6:
         ThreadingTCPServer.address_family = socket.AF_INET6
-    
+
     try:
         for s, r_add, r_port, l_port in tcptrans:
             server = ThreadingTCPServer((LOCAL, l_port),TcpProxyClient)
-            server.seradd = (SERVER[s],SERVER_PORT)
+            server.seradd = (SERVER, SERVER_PORT)
             server.r_sock = (r_add, r_port)
             print 'TCPTrans', l_port, 'to', server.r_sock[0],server.r_sock[1],'@',server.seradd[0]
             local_server(server).start()
